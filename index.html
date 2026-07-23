@@ -79,7 +79,7 @@ main{padding:24px;max-width:1400px;margin:0 auto;width:100%;}
 <div><div class="card"><h3>📅 학사일정</h3><div class="cal-head"><button class="cal-nav" onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button class="cal-nav" onclick="changeMonth(1)">›</button></div><div class="cal" id="cal"></div><div class="event-list" id="eventList"></div></div></div>
 <div><div class="card"><h3>📘 주간 시간표 <span class="tag" id="ttTag"></span></h3><table class="tt" id="tt"></table></div></div></div></main></section>
 <script>
-const PROXY = ""; // 프록시 배포 후 URL 입력 (예: https://sport-edu-proxy.xxx.workers.dev)
+const PROXY = "https://sport-edu-proxy.jjhmvp87.workers.dev"; // 프록시 배포 후 URL 입력 (예: https://sport-edu-proxy.xxx.workers.dev)
 function neis(path, params){
   const qs = new URLSearchParams({Type:'json', ...params}).toString();
   if(PROXY){ return fetch(PROXY + "/" + path + "?" + qs).then(r=>r.json()); }
