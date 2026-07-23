@@ -1,0 +1,162 @@
+TEST_INSERT_123
+LINE2<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORTS·EDU | 체육 교육 통합 플랫폼</title>
+<style>
+:root{--navy:#0f1c3f;--navy-2:#16244f;--card:#fff;--bg:#eef2f8;--mint:#12c2a0;--mint-2:#0aa588;--teal:#1f6feb;--accent:#7c5cff;--text:#1a2340;--muted:#6b7690;--line:#e3e9f2;--shadow:0 10px 30px rgba(15,28,63,.08);}
+[data-theme="dark"]{--navy:#0a1330;--navy-2:#0f1b40;--card:#161f3d;--bg:#0b1226;--text:#e8ecf6;--muted:#9aa6c4;--line:#26304f;--shadow:0 10px 30px rgba(0,0,0,.35);}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Pretendard','Segoe UI',system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);transition:.3s;}.hidden{display:none!important;}button{cursor:pointer;border:none;font-family:inherit;}a{text-decoration:none;color:inherit;}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f1c3f,#16244f 45%,#0aa588 130%);padding:20px;}
+.login-card{background:var(--card);border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.35);width:100%;max-width:440px;padding:44px 40px;text-align:center;}
+.logo{font-size:26px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,var(--teal),var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;}
+.logo span{font-weight:400;}.login-sub{color:var(--muted);font-size:14px;margin-bottom:30px;}
+.step-title{font-size:18px;font-weight:700;margin-bottom:4px;text-align:left;}.step-desc{font-size:13px;color:var(--muted);margin-bottom:22px;text-align:left;}
+.sso-btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.15s;border:1px solid var(--line);}
+.sso-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);}.sso-google{background:#fff;color:#3c4043;}.sso-kakao{background:#FEE500;color:#191600;}
+.divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px;margin:20px 0;}.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line);}
+.field{text-align:left;margin-bottom:16px;position:relative;}.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+.field select,.field input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:var(--card);color:var(--text);}
+.field select:focus,.field input:focus{outline:none;border-color:var(--mint);}
+.autolist{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-top:4px;max-height:180px;overflow:auto;z-index:5;box-shadow:var(--shadow);}
+.autolist div{padding:10px 14px;font-size:13px;cursor:pointer;}.autolist div:hover{background:var(--bg);}
+.primary-btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--teal),var(--mint));margin-top:6px;transition:.15s;}
+.primary-btn:hover{filter:brightness(1.06);transform:translateY(-2px);}.primary-btn:disabled{opacity:.5;cursor:not-allowed;}
+.back-link{display:inline-block;margin-top:16px;font-size:13px;color:var(--muted);background:none;}
+#app{min-height:100vh;display:flex;flex-direction:column;}
+.topbar{background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 24px;height:64px;gap:28px;position:sticky;top:0;z-index:20;}
+.topbar .logo{font-size:20px;}.nav{display:flex;gap:4px;margin-left:10px;flex:1;}
+.nav button,.nav a{background:none;color:#c7cfe6;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;transition:.15s;display:inline-block;}
+.nav button:hover,.nav a:hover{background:rgba(255,255,255,.08);color:#fff;}.nav button.active{background:linear-gradient(90deg,var(--teal),var(--mint));color:#fff;}
+.top-right{display:flex;align-items:center;gap:14px;}.icon-btn{background:rgba(255,255,255,.1);color:#fff;width:38px;height:38px;border-radius:10px;font-size:16px;}
+.profile{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);padding:6px 12px;border-radius:20px;font-size:13px;color:#fff;}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--accent));}
+main{padding:24px;max-width:1400px;margin:0 auto;width:100%;}
+.hello{margin-bottom:20px;}.hello h1{font-size:24px;font-weight:800;letter-spacing:-.5px;}.hello p{color:var(--muted);font-size:14px;margin-top:4px;}
+.grid{display:grid;grid-template-columns:1.1fr 1.3fr 1.4fr;gap:18px;}
+.card{background:var(--card);border-radius:18px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:18px;}
+.card h3{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}.card h3 .tag{margin-left:auto;font-size:11px;color:var(--mint-2);font-weight:600;}
+.clock-card{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;border:none;}.clock-card h3{color:#fff;}
+.clock{font-size:40px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums;}.clock-date{color:#b9c3e0;font-size:14px;margin-bottom:14px;}
+.weather{display:flex;align-items:center;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12);}
+.weather .emoji{font-size:36px;}.weather .temp{font-size:26px;font-weight:700;}.weather .desc{font-size:12px;color:#b9c3e0;}
+.dust{margin-left:auto;text-align:center;background:rgba(255,255,255,.1);padding:8px 14px;border-radius:12px;}.dust b{color:var(--mint);font-size:16px;}
+.meal-list{list-style:none;}.meal-list li{padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px;}.meal-list li:last-child{border:none;}.meal-kcal{margin-top:10px;font-size:12px;color:var(--muted);}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}.cal-head b{font-size:15px;}.cal-nav{background:var(--bg);color:var(--text);width:28px;height:28px;border-radius:8px;}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:12px;}.cal .dow{color:var(--muted);font-weight:600;padding:4px 0;}
+.cal .day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;position:relative;cursor:default;}.cal .day:hover{background:var(--bg);}
+.cal .day.today{background:linear-gradient(135deg,var(--teal),var(--mint));color:#fff;font-weight:700;}
+.cal .day.event::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);position:absolute;bottom:5px;}.cal .sun{color:#e5484d;}.cal .sat{color:var(--teal);}
+.event-list{margin-top:14px;}.event-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;}.event-dot{width:8px;height:8px;border-radius:3px;background:var(--accent);flex-shrink:0;}
+.event-item .dday{margin-left:auto;font-size:11px;background:var(--bg);padding:3px 8px;border-radius:8px;color:var(--mint-2);font-weight:700;white-space:nowrap;}
+.tt{width:100%;border-collapse:collapse;font-size:12px;}.tt th,.tt td{border:1px solid var(--line);padding:6px 4px;text-align:center;}
+.tt th{background:var(--bg);color:var(--muted);font-weight:600;}.tt td.period{background:var(--bg);color:var(--muted);font-weight:600;width:52px;}.tt td.subj{font-weight:600;}
+.tt td.pe{background:linear-gradient(135deg,rgba(18,194,160,.15),rgba(31,111,235,.12));color:var(--mint-2);font-weight:700;}
+.loading{color:var(--muted);font-size:13px;padding:10px 0;}
+@media(max-width:1000px){.grid{grid-template-columns:1fr;}.nav{display:none;}}
+</style>
+</head>
+<body data-theme="light">
+<section id="login"><div class="login-card"><div class="logo">SPORTS<span>·</span>EDU</div><p class="login-sub">체육 교육 통합 플랫폼</p>
+<div id="loginStep1"><div class="step-title">로그인</div><div class="step-desc">소셜 계정으로 간편하게 시작하세요.</div>
+<button class="sso-btn sso-google" onclick="goStep2()"><span style="font-weight:700;color:#4285F4;">G</span> Google로 계속하기</button>
+<button class="sso-btn sso-kakao" onclick="goStep2()">💬 카카오로 계속하기</button><div class="divider">또는</div>
+<button class="sso-btn" style="background:var(--bg);color:var(--muted)" onclick="goStep2()">👤 게스트로 둘러보기</button></div>
+<div id="loginStep2" class="hidden"><div class="step-title">학교 정보 입력</div><div class="step-desc">학사일정·급식·시간표를 불러올 학교를 검색하세요.</div>
+<div class="field"><label>학교명 검색</label><input id="school" placeholder="예) 해밀고등학교" autocomplete="off"><div id="autolist" class="autolist hidden"></div></div>
+<div class="field"><label>학년 / 반</label><div style="display:flex;gap:10px;"><select id="grade" style="flex:1"><option value="1">1학년</option><option value="2" selected>2학년</option><option value="3">3학년</option></select><select id="klass" style="flex:1"><option value="1">1반</option><option value="2">2반</option><option value="3" selected>3반</option><option value="4">4반</option></select></div></div>
+<div id="schoolStatus" style="font-size:12px;color:var(--muted);margin-bottom:10px;">학교를 검색해 선택해 주세요.</div>
+<button class="primary-btn" id="startBtn" onclick="enterApp()" disabled>시작하기 →</button><button class="back-link" onclick="goStep1()">← 뒤로</button></div></div></section>
+<section id="app" class="hidden"><header class="topbar"><div class="logo">SPORTS<span>·</span>EDU</div>
+<nav class="nav"><button class="active">대시보드</button><a href="lecture.html">온라인 강의</a><button onclick="alert('토너먼트·리그전 관리 기능은 준비 중입니다.')">토너먼트·리그전 관리</button></nav>
+<div class="top-right"><button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button><div class="profile"><div class="avatar"></div><span>선생님</span></div><button class="icon-btn" onclick="logout()">⎋</button></div></header>
+<main><div class="hello"><h1>안녕하세요, 선생님 👋</h1><p id="helloSchool"></p></div>
+<div class="grid"><div><div class="card clock-card"><h3>🕐 오늘</h3><div class="clock" id="clock">00:00:00</div><div class="clock-date" id="dateLabel"></div>
+<div class="weather"><span class="emoji">⛅</span><div><div class="temp">–</div><div class="desc">날씨 정보(연동 예정)</div></div><div class="dust">미세먼지<br><b>–</b></div></div></div>
+<div class="card"><h3>🍱 오늘 급식 <span class="tag">중식</span></h3><ul class="meal-list" id="mealList"><li class="loading">불러오는 중…</li></ul><div class="meal-kcal" id="mealKcal"></div></div></div>
+<div><div class="card"><h3>📅 학사일정</h3><div class="cal-head"><button class="cal-nav" onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button class="cal-nav" onclick="changeMonth(1)">›</button></div><div class="cal" id="cal"></div><div class="event-list" id="eventList"></div></div></div>
+<div><div class="card"><h3>📘 주간 시간표 <span class="tag" id="ttTag"></span></h3><table class="tt" id="tt"></table></div></div></div></main></section>
+<script>
+const PROXY = ""; // 프록시 배포 후 URL 입력 (예: https://sport-edu-proxy.xxx.workers.dev)
+function neis(path, params){
+  const qs = new URLSearchParams({Type:'json', ...params}).toString();
+  if(PROXY){ return fetch(PROXY + "/" + path + "?" + qs).then(r=>r.json()); }
+  return Promise.reject(new Error("PROXY_NOT_SET"));
+}
+let SCHOOL=null, viewYear, viewMonth;
+function goStep2(){loginStep1.classList.add('hidden');loginStep2.classList.remove('hidden');}
+function goStep1(){loginStep2.classList.add('hidden');loginStep1.classList.remove('hidden');}
+let searchTimer;
+school.addEventListener('input', ()=>{clearTimeout(searchTimer);const q=school.value.trim();if(q.length<2){autolist.classList.add('hidden');return;}searchTimer=setTimeout(()=>searchSchool(q),300);});
+async function searchSchool(q){
+  try{
+    const j=await neis('schoolInfo',{pSize:10,SCHUL_NM:q});
+    const rows=(j.schoolInfo&&j.schoolInfo[1]&&j.schoolInfo[1].row)||[];
+    autolist.innerHTML=rows.map(r=>'<div data-o="'+r.ATPT_OFCDC_SC_CODE+'" data-s="'+r.SD_SCHUL_CODE+'" data-n="'+r.SCHUL_NM+'" data-k="'+(r.SCHUL_KND_SC_NM||'')+'">'+r.SCHUL_NM+' <span style="color:var(--muted)">('+r.LCTN_SC_NM+')</span></div>').join('');
+    autolist.classList.remove('hidden');
+    [...autolist.children].forEach(el=>el.onclick=()=>{SCHOOL={office:el.dataset.o,code:el.dataset.s,name:el.dataset.n,kind:el.dataset.k};school.value=el.dataset.n;autolist.classList.add('hidden');schoolStatus.textContent='✅ '+el.dataset.n+' 선택됨';startBtn.disabled=false;});
+  }catch(e){schoolStatus.textContent=(e.message==='PROXY_NOT_SET')?'⚠️ 프록시 미설정: 코드 상단 PROXY 값을 입력하세요.':'검색 오류: '+e.message;}
+}
+function enterApp(){
+  if(!SCHOOL)return;
+  const g=grade.value,k=klass.value;
+  helloSchool.textContent=SCHOOL.name+' · '+g+'학년 '+k+'반';ttTag.textContent=g+'-'+k;
+  login.classList.add('hidden');app.classList.remove('hidden');
+  const n=new Date();viewYear=n.getFullYear();viewMonth=n.getMonth()+1;
+  loadMeal();loadTimetable();renderCalendar();
+}
+function logout(){app.classList.add('hidden');login.classList.remove('hidden');goStep1();SCHOOL=null;startBtn.disabled=true;school.value='';schoolStatus.textContent='학교를 검색해 선택해 주세요.';}
+function toggleTheme(){var d=document.body.getAttribute('data-theme')==='dark';document.body.setAttribute('data-theme',d?'light':'dark');themeBtn.textContent=d?'🌙':'☀️';}
+function ymd(dt){return dt.getFullYear()+String(dt.getMonth()+1).padStart(2,'0')+String(dt.getDate()).padStart(2,'0');}
+function tick(){const n=new Date();clock.textContent=n.toLocaleTimeString('ko-KR',{hour12:false});dateLabel.textContent=n.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});}
+setInterval(tick,1000);tick();
+async function loadMeal(){
+  try{
+    const j=await neis('mealServiceDietInfo',{ATPT_OFCDC_SC_CODE:SCHOOL.office,SD_SCHUL_CODE:SCHOOL.code,MLSV_YMD:ymd(new Date())});
+    const rows=(j.mealServiceDietInfo&&j.mealServiceDietInfo[1]&&j.mealServiceDietInfo[1].row)||[];
+    const lunch=rows.find(r=>r.MMEAL_SC_NM==='중식')||rows[0];
+    if(!lunch){mealList.innerHTML='<li>오늘 등록된 급식이 없습니다 🍚</li>';mealKcal.textContent='';return;}
+    const menu=lunch.DDISH_NM.split('<br/>').map(s=>s.replace(/\s*\([0-9.]+\)/g,'').trim()).filter(Boolean);
+    mealList.innerHTML=menu.map(m=>'<li>'+m+'</li>').join('');mealKcal.textContent='🔥 '+lunch.CAL_INFO;
+  }catch(e){mealList.innerHTML='<li>급식 정보를 불러올 수 없습니다.</li>';mealKcal.textContent=e.message==='PROXY_NOT_SET'?'프록시 미설정':'';}
+}
+async function loadTimetable(){
+  const kind=SCHOOL.kind||'';let ep='hisTimetable';
+  if(kind.includes('초등'))ep='elsTimetable';else if(kind.includes('중'))ep='misTimetable';
+  const monday=new Date();const day=monday.getDay();monday.setDate(monday.getDate()-((day+6)%7));
+  const days=[0,1,2,3,4].map(i=>{const d=new Date(monday);d.setDate(monday.getDate()+i);return ymd(d);});
+  try{
+    const results=await Promise.all(days.map(d=>neis(ep,{ATPT_OFCDC_SC_CODE:SCHOOL.office,SD_SCHUL_CODE:SCHOOL.code,GRADE:grade.value,CLASS_NM:klass.value,ALL_TI_YMD:d,pSize:20})));
+    const grid={};let maxP=7;
+    results.forEach((j,di)=>{const key=Object.keys(j)[0];const rows=(j[key]&&j[key][1]&&j[key][1].row)||[];rows.forEach(r=>{const p=parseInt(r.PERIO);grid[p]=grid[p]||{};grid[p][di]=r.ITRT_CNTNT;});});
+    let html='<tr><th>교시</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>';
+    for(let p=1;p<=maxP;p++){html+='<tr><td class="period">'+p+'</td>';for(let d=0;d<5;d++){const s=(grid[p]&&grid[p][d])||'-';html+='<td class="'+(s.includes('체육')?'pe':'subj')+'">'+s+'</td>';}html+='</tr>';}
+    document.getElementById('tt').innerHTML=html;
+  }catch(e){document.getElementById('tt').innerHTML='<tr><td style="padding:14px;color:var(--muted)">시간표를 불러올 수 없습니다'+(e.message==='PROXY_NOT_SET'?' (프록시 미설정)':'')+'</td></tr>';}
+}
+let events={};
+async function loadSchedule(y,m){
+  const from=y+String(m).padStart(2,'0')+'01';const to=y+String(m).padStart(2,'0')+String(new Date(y,m,0).getDate()).padStart(2,'0');
+  events={};
+  try{const j=await neis('SchoolSchedule',{ATPT_OFCDC_SC_CODE:SCHOOL.office,SD_SCHUL_CODE:SCHOOL.code,AA_FROM_YMD:from,AA_TO_YMD:to,pSize:100});const rows=(j.SchoolSchedule&&j.SchoolSchedule[1]&&j.SchoolSchedule[1].row)||[];rows.forEach(r=>{const d=parseInt(r.AA_YMD.slice(6,8));events[d]=r.EVENT_NM;});}catch(e){}
+  drawCal(y,m);
+}
+function drawCal(y,m){
+  calTitle.textContent=y+'년 '+String(m).padStart(2,'0')+'월';
+  const dows=['일','월','화','수','목','금','토'];
+  let html=dows.map((d,i)=>'<div class="dow '+(i==0?'sun':i==6?'sat':'')+'">'+d+'</div>').join('');
+  const first=new Date(y,m-1,1).getDay();const last=new Date(y,m,0).getDate();const today=new Date();
+  for(let i=0;i<first;i++)html+='<div></div>';
+  for(let d=1;d<=last;d++){const dw=(first+d-1)%7;const isT=(y===today.getFullYear()&&m===today.getMonth()+1&&d===today.getDate());html+='<div class="day '+(dw==0?'sun':dw==6?'sat':'')+(isT?' today':'')+(events[d]?' event':'')+'" title="'+(events[d]||'')+'">'+d+'</div>';}
+  document.getElementById('cal').innerHTML=html;
+  const list=Object.keys(events).sort((a,b)=>a-b).map(d=>{const dd=new Date(y,m-1,d);const diff=Math.ceil((dd-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);return '<div class="event-item"><span class="event-dot"></span>'+events[d]+'<span class="dday">'+(diff===0?'D-DAY':diff>0?'D-'+diff:'D+'+(-diff))+'</span></div>';}).join('');
+  eventList.innerHTML=list||'<div style="color:var(--muted);font-size:13px;padding:8px 0">이번 달 학사일정이 없습니다.</div>';
+}
+function renderCalendar(){loadSchedule(viewYear,viewMonth);}
+function changeMonth(dir){viewMonth+=dir;if(viewMonth<1){viewMonth=12;viewYear--;}if(viewMonth>12){viewMonth=1;viewYear++;}renderCalendar();}
+</script>
+</body>
+</html>
