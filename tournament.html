@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORTS·EDU | 토너먼트·리그전 관리</title>
+<style>
+:root{--navy:#0f1c3f;--navy-2:#16244f;--card:#fff;--bg:#eef2f8;--mint:#12c2a0;--mint-2:#0aa588;--teal:#1f6feb;--accent:#7c5cff;--text:#1a2340;--muted:#6b7690;--line:#e3e9f2;--shadow:0 10px 30px rgba(15,28,63,.08);}
+[data-theme="dark"]{--navy:#0a1330;--navy-2:#0f1b40;--card:#161f3d;--bg:#0b1226;--text:#e8ecf6;--muted:#9aa6c4;--line:#26304f;--shadow:0 10px 30px rgba(0,0,0,.35);}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Pretendard','Segoe UI',system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);transition:.3s;}button{cursor:pointer;border:none;font-family:inherit;}a{text-decoration:none;color:inherit;}
+.topbar{background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 24px;height:64px;gap:28px;position:sticky;top:0;z-index:20;}
+.logo{font-size:20px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,var(--teal),var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.logo span{font-weight:400;}
+.nav{display:flex;gap:4px;margin-left:10px;flex:1;}
+.nav button,.nav a{background:none;color:#c7cfe6;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;transition:.15s;display:inline-block;}
+.nav button:hover,.nav a:hover{background:rgba(255,255,255,.08);color:#fff;}.nav a.active{background:linear-gradient(90deg,var(--teal),var(--mint));color:#fff;}
+.top-right{display:flex;align-items:center;gap:14px;}.icon-btn{background:rgba(255,255,255,.1);color:#fff;width:38px;height:38px;border-radius:10px;font-size:16px;}
+.profile{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);padding:6px 12px;border-radius:20px;font-size:13px;color:#fff;}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--accent));}
+main{padding:24px;max-width:1400px;margin:0 auto;width:100%;}
+.hello{margin-bottom:20px;}.hello h1{font-size:24px;font-weight:800;letter-spacing:-.5px;}.hello p{color:var(--muted);font-size:14px;margin-top:4px;}
+.tabs{display:flex;gap:8px;margin-bottom:20px;}
+.tab-btn{padding:10px 20px;border-radius:12px;font-size:14px;font-weight:700;background:var(--card);border:1px solid var(--line);color:var(--muted);transition:.15s;}
+.tab-btn:hover{border-color:var(--mint);color:var(--mint-2);}
+.tab-btn.active{background:linear-gradient(90deg,var(--teal),var(--mint));color:#fff;border-color:transparent;}
+.card{background:var(--card);border-radius:18px;padding:22px;box-shadow:var(--shadow);border:1px solid var(--line);}
+.card-head{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+.card-head h3{font-size:16px;font-weight:700;}.card-head .badge{margin-left:auto;font-size:12px;font-weight:700;color:var(--mint-2);background:var(--bg);padding:5px 12px;border-radius:10px;}
+/* bracket */
+.bracket{display:flex;gap:36px;overflow-x:auto;padding:10px 4px 20px;}
+.round{display:flex;flex-direction:column;justify-content:space-around;gap:16px;min-width:190px;}
+.round-title{font-size:12px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:6px;letter-spacing:.4px;}
+.match{background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.team{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;font-size:13px;font-weight:600;border-bottom:1px solid var(--line);}
+.team:last-child{border-bottom:none;}
+.team.win{color:var(--mint-2);}.team.win .score{background:var(--mint);color:#fff;}
+.team.lose{color:var(--muted);opacity:.7;}
+.team .score{font-size:12px;font-weight:800;background:var(--line);color:var(--text);min-width:24px;text-align:center;padding:2px 6px;border-radius:6px;}
+.team.tbd{color:var(--muted);font-style:italic;opacity:.6;}
+.champion{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:170px;}
+.trophy{font-size:44px;}
+.champ-name{font-size:17px;font-weight:800;background:linear-gradient(90deg,var(--teal),var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.champ-label{font-size:12px;color:var(--muted);}
+/* league table */
+.lg{width:100%;border-collapse:collapse;font-size:13px;}
+.lg th,.lg td{padding:11px 10px;text-align:center;border-bottom:1px solid var(--line);}
+.lg th{background:var(--bg);color:var(--muted);font-weight:700;font-size:12px;}
+.lg td.team-cell{text-align:left;font-weight:700;display:flex;align-items:center;gap:10px;}
+.lg .rank{width:26px;height:26px;border-radius:8px;background:var(--bg);color:var(--muted);font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:12px;}
+.lg tr.top .rank{background:linear-gradient(135deg,var(--teal),var(--mint));color:#fff;}
+.lg td.pts{font-weight:800;color:var(--mint-2);}
+.hint{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.6;}
+.hidden{display:none;}
+@media(max-width:1000px){.nav{display:none;}}
+</style>
+</head>
+<body data-theme="light">
+<header class="topbar"><div class="logo">SPORTS<span>·</span>EDU</div>
+<nav class="nav"><a href="index.html">대시보드</a><a href="lecture.html">온라인 강의</a><a class="active">토너먼트·리그전 관리</a></nav>
+<div class="top-right"><button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button><div class="profile"><div class="avatar"></div><span>선생님</span></div><a class="icon-btn" href="index.html" title="대시보드로">⎋</a></div></header>
+<main>
+<div class="hello"><h1>토너먼트·리그전 관리 🏆</h1><p>학급 대항전과 리그전 대진·순위를 한눈에 관리하세요.</p></div>
+<div class="tabs">
+<button class="tab-btn active" id="tabT" onclick="showTab('t')">🥇 토너먼트</button>
+<button class="tab-btn" id="tabL" onclick="showTab('l')">📊 리그전</button>
+</div>
+
+<section id="viewT" class="card">
+<div class="card-head"><h3>🏀 2학년 학급 대항 농구 토너먼트</h3><span class="badge">8팀 · 싱글 엘리미네이션</span></div>
+<div class="bracket" id="bracket"></div>
+<div class="hint">※ 대진표는 예시 데이터입니다. 팀·점수는 코드의 <b>ROUNDS</b> 배열을 수정해 바꿀 수 있습니다.</div>
+</section>
+
+<section id="viewL" class="card hidden">
+<div class="card-head"><h3>⚽ 2학년 학급 대항 축구 리그전</h3><span class="badge">6팀 · 풀리그</span></div>
+<table class="lg" id="lgTable"></table>
+<div class="hint">※ 승점 = 승 3점 · 무 1점 · 패 0점 기준으로 자동 정렬됩니다. 데이터는 코드의 <b>LEAGUE</b> 배열에서 수정하세요.</div>
+</section>
+</main>
+<script>
+function toggleTheme(){var d=document.body.getAttribute('data-theme')==='dark';document.body.setAttribute('data-theme',d?'light':'dark');themeBtn.textContent=d?'🌙':'☀️';}
+function showTab(t){
+document.getElementById('viewT').classList.toggle('hidden',t!=='t');
+document.getElementById('viewL').classList.toggle('hidden',t!=='l');
+document.getElementById('tabT').classList.toggle('active',t==='t');
+document.getElementById('tabL').classList.toggle('active',t==='l');
+}
+// 토너먼트 대진 데이터: 각 라운드의 경기 [{a,b, sa,sb}] (win은 점수로 자동판정)
+const ROUNDS=[
+{title:"8강",matches:[
+{a:"1반",b:"8반",sa:52,sb:41},
+{a:"4반",b:"5반",sa:38,sb:44},
+{a:"2반",b:"7반",sa:60,sb:33},
+{a:"3반",b:"6반",sa:47,sb:49}
+]},
+{title:"4강",matches:[
+{a:"1반",b:"5반",sa:55,sb:50},
+{a:"2반",b:"6반",sa:48,sb:62}
+]},
+{title:"결승",matches:[
+{a:"1반",b:"6반",sa:58,sb:53}
+]}
+];
+const CHAMPION="1반";
+function renderBracket(){
+let html='';
+ROUNDS.forEach(r=>{
+let m='<div class="round"><div class="round-title">'+r.title+'</div>';
+r.matches.forEach(g=>{
+const aWin=g.sa>g.sb, bWin=g.sb>g.sa;
+const teamRow=(name,score,win)=>{
+if(name==='TBD'||name===undefined) return '<div class="team tbd"><span>미정</span><span class="score">-</span></div>';
+return '<div class="team '+(win?'win':'lose')+'"><span>'+name+'</span><span class="score">'+score+'</span></div>';
+};
+m+='<div class="match">'+teamRow(g.a,g.sa,aWin)+teamRow(g.b,g.sb,bWin)+'</div>';
+});
+m+='</div>';
+html+=m;
+});
+html+='<div class="round"><div class="round-title">우승</div><div class="champion"><div class="trophy">🏆</div><div class="champ-name">'+CHAMPION+'</div><div class="champ-label">CHAMPION</div></div></div>';
+document.getElementById('bracket').innerHTML=html;
+}
+// 리그전: {team, w, d, l, gf, ga}
+const LEAGUE=[
+{team:"1반",w:4,d:1,l:0,gf:14,ga:5},
+{team:"2반",w:3,d:1,l:1,gf:11,ga:7},
+{team:"3반",w:2,d:2,l:1,gf:9,ga:8},
+{team:"4반",w:2,d:0,l:3,gf:8,ga:10},
+{team:"5반",w:1,d:1,l:3,gf:6,ga:12},
+{team:"6반",w:0,d:1,l:4,gf:4,ga:15}
+];
+function renderLeague(){
+const rows=LEAGUE.map(t=>{const pts=t.w*3+t.d;const gd=t.gf-t.ga;return {...t,pts,gd,gp:t.w+t.d+t.l};});
+rows.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+let html='<tr><th>순위</th><th style="text-align:left;padding-left:14px">팀</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득실</th><th>승점</th></tr>';
+rows.forEach((t,i)=>{
+const gdTxt=(t.gd>0?'+':'')+t.gd;
+html+='<tr class="'+(i<2?'top':'')+'"><td><span class="rank">'+(i+1)+'</span></td>'+
+'<td class="team-cell">'+t.team+'</td>'+
+'<td>'+t.gp+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td>'+
+'<td>'+gdTxt+'</td><td class="pts">'+t.pts+'</td></tr>';
+});
+document.getElementById('lgTable').innerHTML=html;
+}
+renderBracket();renderLeague();
+</script>
+</body>
+</html>
