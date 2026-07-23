@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORTS·EDU | 온라인 강의</title>
+<style>
+:root{--navy:#0f1c3f;--navy-2:#16244f;--card:#fff;--bg:#eef2f8;--mint:#12c2a0;--mint-2:#0aa588;--teal:#1f6feb;--accent:#7c5cff;--text:#1a2340;--muted:#6b7690;--line:#e3e9f2;--shadow:0 10px 30px rgba(15,28,63,.08);}
+[data-theme="dark"]{--navy:#0a1330;--navy-2:#0f1b40;--card:#161f3d;--bg:#0b1226;--text:#e8ecf6;--muted:#9aa6c4;--line:#26304f;--shadow:0 10px 30px rgba(0,0,0,.35);}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Pretendard','Segoe UI',system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);transition:.3s;}button{cursor:pointer;border:none;font-family:inherit;}a{text-decoration:none;color:inherit;}
+.topbar{background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 24px;height:64px;gap:28px;position:sticky;top:0;z-index:20;}
+.logo{font-size:20px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,var(--teal),var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.logo span{font-weight:400;}
+.nav{display:flex;gap:4px;margin-left:10px;flex:1;}
+.nav button,.nav a{background:none;color:#c7cfe6;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;transition:.15s;display:inline-block;}
+.nav button:hover,.nav a:hover{background:rgba(255,255,255,.08);color:#fff;}.nav a.active{background:linear-gradient(90deg,var(--teal),var(--mint));color:#fff;}
+.top-right{display:flex;align-items:center;gap:14px;}.icon-btn{background:rgba(255,255,255,.1);color:#fff;width:38px;height:38px;border-radius:10px;font-size:16px;}
+.profile{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);padding:6px 12px;border-radius:20px;font-size:13px;color:#fff;}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--accent));}
+main{padding:24px;max-width:1400px;margin:0 auto;width:100%;}
+.hello{margin-bottom:20px;}.hello h1{font-size:24px;font-weight:800;letter-spacing:-.5px;}.hello p{color:var(--muted);font-size:14px;margin-top:4px;}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.search{flex:1;min-width:220px;position:relative;}
+.search input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--line);border-radius:12px;font-size:14px;background:var(--card);color:var(--text);}
+.search input:focus{outline:none;border-color:var(--mint);}
+.search::before{content:"🔍";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;}
+.chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{padding:9px 16px;border-radius:20px;font-size:13px;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--muted);transition:.15s;}
+.chip:hover{border-color:var(--mint);color:var(--mint-2);}
+.chip.active{background:linear-gradient(90deg,var(--teal),var(--mint));color:#fff;border-color:transparent;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+.course{background:var(--card);border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden;transition:.15s;cursor:pointer;}
+.course:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,28,63,.14);}
+.thumb{height:150px;background:linear-gradient(135deg,var(--navy),var(--mint-2));display:flex;align-items:center;justify-content:center;font-size:46px;position:relative;}
+.thumb .lvl{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.35);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;}
+.thumb .dur{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:3px 8px;border-radius:6px;}
+.course-body{padding:16px 18px 20px;}
+.course-cat{font-size:11px;font-weight:700;color:var(--mint-2);letter-spacing:.3px;}
+.course-title{font-size:16px;font-weight:700;margin:6px 0 6px;line-height:1.35;}
+.course-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:14px;min-height:38px;}
+.course-meta{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+.course-meta .teacher{display:flex;align-items:center;gap:6px;}
+.mini-avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--accent));}
+.progress{margin-top:12px;height:6px;border-radius:4px;background:var(--line);overflow:hidden;}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--mint));}
+.progress-label{font-size:11px;color:var(--muted);margin-top:6px;}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:60px 0;font-size:14px;}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(10,16,40,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:var(--card);border-radius:20px;width:100%;max-width:720px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);}
+.player{aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;flex-direction:column;gap:12px;}
+.play-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.9);color:var(--navy);font-size:26px;display:flex;align-items:center;justify-content:center;}
+.modal-body{padding:22px 24px 26px;}
+.modal-body h2{font-size:20px;font-weight:800;margin-bottom:8px;}
+.modal-body p{font-size:14px;color:var(--muted);line-height:1.6;}
+.modal-close{position:absolute;top:18px;right:22px;background:rgba(255,255,255,.15);color:#fff;width:34px;height:34px;border-radius:10px;font-size:16px;z-index:60;}
+.modal-wrap{position:relative;}
+@media(max-width:1000px){.nav{display:none;}}
+</style>
+</head>
+<body data-theme="light">
+<header class="topbar"><div class="logo">SPORTS<span>·</span>EDU</div>
+<nav class="nav"><a href="index.html">대시보드</a><a class="active">온라인 강의</a><button onclick="alert('토너먼트·리그전 관리 기능은 준비 중입니다.')">토너먼트·리그전 관리</button></nav>
+<div class="top-right"><button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button><div class="profile"><div class="avatar"></div><span>선생님</span></div><a class="icon-btn" href="index.html" title="대시보드로">⎋</a></div></header>
+<main>
+<div class="hello"><h1>온라인 강의 📚</h1><p>체육 이론·실기 강의를 찾아보고 학습을 이어가세요.</p></div>
+<div class="toolbar">
+<div class="search"><input id="q" placeholder="강의명·강사·키워드 검색" autocomplete="off"></div>
+<div class="chips" id="chips"></div>
+</div>
+<div class="grid" id="grid"></div>
+</main>
+<div class="modal-bg" id="modalBg"><div class="modal modal-wrap">
+<button class="modal-close" onclick="closeModal()">✕</button>
+<div class="player"><div class="play-btn">▶</div><div style="font-size:13px;color:#c7cfe6" id="mPlayer">강의 미리보기 (샘플)</div></div>
+<div class="modal-body"><h2 id="mTitle"></h2><p id="mDesc"></p></div>
+</div></div>
+<script>
+const COURSES=[
+{cat:"이론",cats:["이론"],title:"운동 생리학 기초",teacher:"김체육",level:"입문",dur:"12:40",icon:"🫀",prog:80,desc:"근수축·에너지 대사·심폐 기능 등 운동의 생리학적 원리를 이해합니다."},
+{cat:"실기",cats:["실기","구기"],title:"농구 드리블 & 레이업",teacher:"박코치",level:"초급",dur:"18:05",icon:"🏀",prog:45,desc:"기본 드리블 자세부터 레이업 슛까지 단계별로 배웁니다."},
+{cat:"실기",cats:["실기","구기"],title:"배구 서브·리시브",teacher:"이스파이크",level:"초급",dur:"15:22",icon:"🏐",prog:0,desc:"언더·오버 서브와 안정적인 리시브 자세를 익힙니다."},
+{cat:"이론",cats:["이론","안전"],title:"운동 상해 예방과 응급처치",teacher:"정안전",level:"중급",dur:"21:10",icon:"🩹",prog:100,desc:"부상 예방 스트레칭과 RICE 응급처치법을 다룹니다."},
+{cat:"실기",cats:["실기","체력"],title:"코어 근력 트레이닝",teacher:"최근력",level:"중급",dur:"09:58",icon:"💪",prog:20,desc:"플랭크·브릿지 등 체간 안정화 운동 루틴을 소개합니다."},
+{cat:"실기",cats:["실기","구기"],title:"축구 패스 & 트래핑",teacher:"한드리블",level:"초급",dur:"16:44",icon:"⚽",prog:60,desc:"인사이드 패스와 볼 트래핑의 기본기를 연습합니다."},
+{cat:"이론",cats:["이론","규칙"],title:"주요 종목 경기 규칙 정리",teacher:"오심판",level:"입문",dur:"24:30",icon:"📋",prog:0,desc:"농구·배구·축구 등 주요 종목의 핵심 규칙을 한눈에 정리합니다."},
+{cat:"실기",cats:["실기","체력"],title:"유연성 향상 스트레칭",teacher:"유연해",level:"입문",dur:"11:15",icon:"🧘",prog:35,desc:"수업 전후에 활용할 수 있는 동적·정적 스트레칭 루틴입니다."}
+];
+const CATS=["전체","이론","실기","구기","체력","안전","규칙"];
+let curCat="전체", curQ="";
+function toggleTheme(){var d=document.body.getAttribute('data-theme')==='dark';document.body.setAttribute('data-theme',d?'light':'dark');themeBtn.textContent=d?'🌙':'☀️';}
+function renderChips(){chips.innerHTML=CATS.map(c=>'<button class="chip'+(c===curCat?' active':'')+'" onclick="setCat(\''+c+'\')">'+c+'</button>').join('');}
+function setCat(c){curCat=c;renderChips();renderGrid();}
+document.getElementById('q').addEventListener('input',e=>{curQ=e.target.value.trim().toLowerCase();renderGrid();});
+function levelColor(l){return l;}
+function renderGrid(){
+const list=COURSES.filter(c=>{
+const catOk=curCat==='전체'||c.cats.includes(curCat);
+const qOk=!curQ||(c.title+c.teacher+c.desc+c.cat).toLowerCase().includes(curQ);
+return catOk&&qOk;
+});
+if(!list.length){grid.innerHTML='<div class="empty">조건에 맞는 강의가 없습니다 🔍</div>';return;}
+grid.innerHTML=list.map((c,i)=>{
+const idx=COURSES.indexOf(c);
+const progHtml=c.prog>0?'<div class="progress"><i style="width:'+c.prog+'%"></i></div><div class="progress-label">'+(c.prog===100?'✅ 수강 완료':'이어보기 · '+c.prog+'%')+'</div>':'<div class="progress-label">아직 시청하지 않음</div>';
+return '<div class="course" onclick="openModal('+idx+')">'+
+'<div class="thumb"><span class="lvl">'+c.level+'</span>'+c.icon+'<span class="dur">'+c.dur+'</span></div>'+
+'<div class="course-body"><div class="course-cat">'+c.cat+'</div><div class="course-title">'+c.title+'</div>'+
+'<div class="course-desc">'+c.desc+'</div>'+
+'<div class="course-meta"><span class="teacher"><span class="mini-avatar"></span>'+c.teacher+'</span></div>'+
+progHtml+'</div></div>';
+}).join('');
+}
+function openModal(i){const c=COURSES[i];mTitle.textContent=c.title;mDesc.textContent=c.desc+' · 강사 '+c.teacher+' · '+c.dur;mPlayer.textContent=c.icon+' '+c.title+' (샘플 영상)';modalBg.classList.add('show');}
+function closeModal(){modalBg.classList.remove('show');}
+modalBg.addEventListener('click',e=>{if(e.target===modalBg)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+renderChips();renderGrid();
+</script>
+</body>
+</html>
