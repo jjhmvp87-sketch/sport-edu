@@ -79,11 +79,11 @@ main{padding:24px;max-width:1400px;margin:0 auto;width:100%;}
 <div><div class="card"><h3>📅 학사일정</h3><div class="cal-head"><button class="cal-nav" onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button class="cal-nav" onclick="changeMonth(1)">›</button></div><div class="cal" id="cal"></div><div class="event-list" id="eventList"></div></div></div>
 <div><div class="card"><h3>📘 주간 시간표 <span class="tag" id="ttTag"></span></h3><table class="tt" id="tt"></table></div></div></div></main></section>
 <script>
-const PROXY = "https://sport-edu-proxy.jjhmvp87.workers.dev"; // 프록시 배포 후 URL 입력 (예: https://sport-edu-proxy.xxx.workers.dev)
-function neis(path, params){
-  const qs = new URLSearchParams({Type:'json', ...params}).toString();
-  if(PROXY){ return fetch(PROXY + "/" + path + "?" + qs).then(r=>r.json()); }
-  return Promise.reject(new Error("PROXY_NOT_SET"));
+const NEIS_BASE = "https://open.neis.go.kr/hub";
+  const NEIS_KEY = "f2dccc0bc5c44ee2b3fab7ec897872bb";
+  function neis(path, params){
+      const qs = new URLSearchParams({KEY:NEIS_KEY, Type:'json', ...params}).toString();
+      return fetch(NEIS_BASE + "/" + path + "?" + qs).then(r=>r.json());
 }
 let SCHOOL=null, viewYear, viewMonth;
 function goStep2(){loginStep1.classList.add('hidden');loginStep2.classList.remove('hidden');}
