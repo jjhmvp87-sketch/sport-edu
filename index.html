@@ -159,6 +159,22 @@ main{padding:24px;max-width:1400px;margin:0 auto;width:100%;}
   .lp-h1{font-size:34px;}
 }
 
+
+/* ===== Multi-category calendar ===== */
+.cal-filters{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;}
+.cal-filter{border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit;transition:.15s;}
+.cal-filter .dotc{width:8px;height:8px;border-radius:50%;}
+.cal-filter.on{color:var(--text);border-color:var(--teal);background:#eef4ff;}
+.cal-filter.all.on{background:var(--teal);color:#fff;border-color:var(--teal);}
+.cal .day{min-height:96px;justify-content:flex-start;align-items:stretch;padding:6px 5px 4px;overflow:hidden;}
+.cal .day .dnum{font-size:13px;text-align:left;padding-left:2px;margin-bottom:3px;}
+.cal .day .evs{display:flex;flex-direction:column;gap:2px;width:100%;}
+.cal .day .ev{font-size:10px;line-height:1.25;font-weight:600;color:#fff;border-radius:4px;padding:1px 4px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cal .day .more{font-size:10px;color:var(--muted);text-align:left;padding-left:3px;font-weight:700;}
+.cal .day.today .dnum{color:#fff;}
+.cal .day.today{background:linear-gradient(135deg,var(--teal),var(--mint));}
+.cal .day.today .ev{box-shadow:0 0 0 1px rgba(255,255,255,.4);}
+
 </style>
 </head>
 <body data-theme="light">
@@ -294,7 +310,7 @@ main{padding:24px;max-width:1400px;margin:0 auto;width:100%;}
 <div class="grid"><div><div class="card clock-card"><h3>🕐 오늘</h3><div class="clock" id="clock">00:00:00</div><div class="clock-date" id="dateLabel"></div>
 <div class="weather"><span class="emoji">⛅</span><div><div class="temp">–</div><div class="desc">날씨 정보(연동 예정)</div></div><div class="dust">미세먼지<br><b>–</b></div></div></div>
 <div class="card"><h3>🍱 오늘 급식 <span class="tag">중식</span></h3><ul class="meal-list" id="mealList"><li class="loading">불러오는 중…</li></ul><div class="meal-kcal" id="mealKcal"></div></div></div>
-<div><div class="card"><h3>📅 학사일정</h3><div class="cal-head"><button class="cal-nav" onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button class="cal-nav" onclick="changeMonth(1)">›</button></div><div class="cal" id="cal"></div><div class="event-list" id="eventList"></div></div></div>
+<div><div class="card"><h3>📅 학사일정 · 업무 캘린더</h3><div class="cal-filters" id="calFilters"></div><div class="cal-head"><button class="cal-nav" onclick="changeMonth(-1)">‹</button><b id="calTitle"></b><button class="cal-nav" onclick="changeMonth(1)">›</button></div><div class="cal" id="cal"></div><div class="event-list" id="eventList"></div></div></div>
 <div><div class="card"><h3>📘 주간 시간표 <span class="tag" id="ttTag"></span></h3><table class="tt" id="tt"></table></div></div></div></main></section>
 <script>
 
@@ -357,25 +373,87 @@ async function loadTimetable(){
     document.getElementById('tt').innerHTML=html;
   }catch(e){document.getElementById('tt').innerHTML='<tr><td style="padding:14px;color:var(--muted)">시간표를 불러올 수 없습니다'+(e.message==='PROXY_NOT_SET'?' (프록시 미설정)':'')+'</td></tr>';}
 }
+/* ===== 카테고리 정의 ===== */
+const CATS=[
+  {key:'neis',   name:'학사일정',      color:'#1f6feb'},
+  {key:'month',  name:'월중행사',      color:'#12c2a0'},
+  {key:'weekly', name:'주간업무계획',  color:'#f59e0b'},
+  {key:'creative',name:'창의적체험활동',color:'#7c5cff'},
+  {key:'personal',name:'개인일정',     color:'#e5484d'}
+];
+const CAT_MAP=Object.fromEntries(CATS.map(c=>[c.key,c]));
+let CAT_FILTER='all';
+/* ===== Google Sheet CSV 연동 (게시된 CSV URL을 넣으세요) =====
+   시트 열 구성: date(YYYY-MM-DD) , category , title
+   category 값은 위 CATS의 name 또는 key 중 하나로 입력하세요.
+   예: 2026-07-21 , 월중행사 , 방학식
+   URL이 비어 있으면 시트 연동은 건너뜁니다. */
+const SHEET_CSV_URL='';
+let SHEET_EVENTS=[];
+function catKeyFromLabel(v){if(!v)return 'personal';v=String(v).trim();for(const c of CATS){if(c.key===v||c.name===v)return c.key;}return 'personal';}
+function parseCSV(text){
+  const rows=[];let i=0,f='',row=[],q=false;
+  while(i<text.length){const ch=text[i];
+    if(q){if(ch==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=ch;}
+    else{if(ch==='"')q=true;else if(ch===','){row.push(f);f='';}else if(ch==='\n'||ch==='\r'){if(f!==''||row.length){row.push(f);rows.push(row);row=[];f='';}if(ch==='\r'&&text[i+1]==='\n')i++;}else f+=ch;}
+    i++;}
+  if(f!==''||row.length){row.push(f);rows.push(row);}
+  return rows;
+}
+async function loadSheet(){
+  if(!SHEET_CSV_URL){SHEET_EVENTS=[];return;}
+  try{const res=await fetch(SHEET_CSV_URL);const txt=await res.text();const rows=parseCSV(txt);
+    if(!rows.length){SHEET_EVENTS=[];return;}
+    let start=0;const h=rows[0].map(x=>x.trim().toLowerCase());
+    const di=h.indexOf('date'),ci=h.indexOf('category'),ti=h.indexOf('title');
+    let D=di,C=ci,T=ti;if(di<0){D=0;C=1;T=2;}else start=1;
+    SHEET_EVENTS=rows.slice(start).filter(r=>r[D]&&r[T]).map(r=>({date:(r[D]||'').trim(),cat:catKeyFromLabel(r[C]),title:(r[T]||'').trim()}));
+  }catch(e){SHEET_EVENTS=[];}
+}
+/* ===== 월별 이벤트 병합 (NEIS + 시트) ===== */
 let events={};
 async function loadSchedule(y,m){
-  const from=y+String(m).padStart(2,'0')+'01';const to=y+String(m).padStart(2,'0')+String(new Date(y,m,0).getDate()).padStart(2,'0');
   events={};
-  try{const j=await neis('SchoolSchedule',{ATPT_OFCDC_SC_CODE:SCHOOL.office,SD_SCHUL_CODE:SCHOOL.code,AA_FROM_YMD:from,AA_TO_YMD:to,pSize:100});const rows=(j.SchoolSchedule&&j.SchoolSchedule[1]&&j.SchoolSchedule[1].row)||[];rows.forEach(r=>{const d=parseInt(r.AA_YMD.slice(6,8));events[d]=r.EVENT_NM;});}catch(e){}
+  const mm=String(m).padStart(2,'0');
+  const from=y+mm+'01';const to=y+mm+String(new Date(y,m,0).getDate()).padStart(2,'0');
+  try{const j=await neis('SchoolSchedule',{ATPT_OFCDC_SC_CODE:SCHOOL.office,SD_SCHUL_CODE:SCHOOL.code,AA_FROM_YMD:from,AA_TO_YMD:to,pSize:100});
+    const rows=(j.SchoolSchedule&&j.SchoolSchedule[1]&&j.SchoolSchedule[1].row)||[];
+    rows.forEach(r=>{const d=parseInt(r.AA_YMD.slice(6,8));(events[d]=events[d]||[]).push({cat:'neis',title:r.EVENT_NM});});
+  }catch(e){}
+  const pref=y+'-'+mm+'-';
+  SHEET_EVENTS.forEach(ev=>{if(ev.date&&ev.date.indexOf(pref)===0){const d=parseInt(ev.date.slice(8,10));if(d)(events[d]=events[d]||[]).push({cat:ev.cat,title:ev.title});}});
   drawCal(y,m);
 }
+function renderFilters(){
+  const el=document.getElementById('calFilters');if(!el)return;
+  let html='<button class="cal-filter all'+(CAT_FILTER==='all'?' on':'')+'" onclick="setFilter(\'all\')">전체</button>';
+  html+=CATS.map(c=>'<button class="cal-filter'+(CAT_FILTER===c.key?' on':'')+'" onclick="setFilter(\''+c.key+'\')"><span class="dotc" style="background:'+c.color+'"></span>'+c.name+'</button>').join('');
+  el.innerHTML=html;
+}
+function setFilter(k){CAT_FILTER=k;renderFilters();drawCal(viewYear,viewMonth);}
 function drawCal(y,m){
+  renderFilters();
   calTitle.textContent=y+'년 '+String(m).padStart(2,'0')+'월';
   const dows=['일','월','화','수','목','금','토'];
   let html=dows.map((d,i)=>'<div class="dow '+(i==0?'sun':i==6?'sat':'')+'">'+d+'</div>').join('');
   const first=new Date(y,m-1,1).getDay();const last=new Date(y,m,0).getDate();const today=new Date();
   for(let i=0;i<first;i++)html+='<div></div>';
-  for(let d=1;d<=last;d++){const dw=(first+d-1)%7;const isT=(y===today.getFullYear()&&m===today.getMonth()+1&&d===today.getDate());html+='<div class="day '+(dw==0?'sun':dw==6?'sat':'')+(isT?' today':'')+(events[d]?' event':'')+'" title="'+(events[d]||'')+'">'+d+'</div>';}
+  for(let d=1;d<=last;d++){
+    const dw=(first+d-1)%7;const isT=(y===today.getFullYear()&&m===today.getMonth()+1&&d===today.getDate());
+    let list=(events[d]||[]);if(CAT_FILTER!=='all')list=list.filter(e=>e.cat===CAT_FILTER);
+    const shown=list.slice(0,3);const extra=list.length-shown.length;
+    let evHtml=shown.map(e=>'<div class="ev" style="background:'+((CAT_MAP[e.cat]||{}).color||'#888')+'" title="'+String(e.title).replace(/"/g,'')+'">'+e.title+'</div>').join('');
+    if(extra>0)evHtml+='<div class="more">+'+extra+'</div>';
+    html+='<div class="day '+(dw==0?'sun':dw==6?'sat':'')+(isT?' today':'')+'"><div class="dnum">'+d+'</div><div class="evs">'+evHtml+'</div></div>';
+  }
   document.getElementById('cal').innerHTML=html;
-  const list=Object.keys(events).sort((a,b)=>a-b).map(d=>{const dd=new Date(y,m-1,d);const diff=Math.ceil((dd-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);return '<div class="event-item"><span class="event-dot"></span>'+events[d]+'<span class="dday">'+(diff===0?'D-DAY':diff>0?'D-'+diff:'D+'+(-diff))+'</span></div>';}).join('');
-  eventList.innerHTML=list||'<div style="color:var(--muted);font-size:13px;padding:8px 0">이번 달 학사일정이 없습니다.</div>';
+  let all=[];Object.keys(events).forEach(d=>{(events[d]||[]).forEach(e=>{if(CAT_FILTER==='all'||e.cat===CAT_FILTER)all.push({d:parseInt(d),cat:e.cat,title:e.title});});});
+  all.sort((a,b)=>a.d-b.d);
+  const listHtml=all.map(e=>{const dd=new Date(y,m-1,e.d);const diff=Math.ceil((dd-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);const c=(CAT_MAP[e.cat]||{}).color||'#888';return '<div class="event-item"><span class="event-dot" style="background:'+c+'"></span>'+e.title+'<span class="dday">'+(diff===0?'D-DAY':diff>0?'D-'+diff:'D+'+(-diff))+'</span></div>';}).join('');
+  eventList.innerHTML=listHtml||'<div style="color:var(--muted);font-size:13px;padding:8px 0">표시할 일정이 없습니다.</div>';
 }
-function renderCalendar(){loadSchedule(viewYear,viewMonth);}
+let __sheetLoaded=false;
+async function renderCalendar(){if(!__sheetLoaded){await loadSheet();__sheetLoaded=true;}loadSchedule(viewYear,viewMonth);}
 function changeMonth(dir){viewMonth+=dir;if(viewMonth<1){viewMonth=12;viewYear--;}if(viewMonth>12){viewMonth=1;viewYear++;}renderCalendar();}
 </script>
 </body>
