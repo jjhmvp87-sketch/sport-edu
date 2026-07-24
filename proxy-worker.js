@@ -9,7 +9,7 @@
  * 배포 후: index.html 의  const PROXY = "";  값에
  *          이 Worker 주소(예: https://sport-edu-proxy.xxx.workers.dev)를 넣으세요.
  *
- * 필요한 Secret:  a8514d2424554abc8a77d3d3e785b81e  (open.neis.go.kr 에서 발급받은 인증키)
+ * 필요한 Secret:  YOUR_NEIS_KEY_HERE  (open.neis.go.kr 에서 발급받은 인증키)
  *   설정 방법:  wrangler secret put NEIS_KEY
  *              또는 Cloudflare 대시보드 > Worker > Settings > Variables 에서 추가
  * ------------------------------------------------------------------
