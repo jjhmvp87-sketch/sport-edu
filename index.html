@@ -388,7 +388,7 @@ let CAT_FILTER='all';
    category 값은 위 CATS의 name 또는 key 중 하나로 입력하세요.
    예: 2026-07-21 , 월중행사 , 방학식
    URL이 비어 있으면 시트 연동은 건너뜁니다. */
-const SHEET_CSV_URL='';
+const SHEET_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTBGkJwjlXQ7K59gCBxkyAgENMqMwJcy1ihy44dEifARypkoY7JQrbH4vCw6f_ZaA5-GPbA-LQ3MTLQ/pub?output=csv';
 let SHEET_EVENTS=[];
 function catKeyFromLabel(v){if(!v)return 'personal';v=String(v).trim();for(const c of CATS){if(c.key===v||c.name===v)return c.key;}return 'personal';}
 function parseCSV(text){
